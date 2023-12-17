@@ -1,3 +1,5 @@
 # ignora tutti i file nelle cartelle
-TEMP/
+TEST/
 output/
+test/
+bin/
