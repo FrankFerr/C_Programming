@@ -11,7 +11,7 @@ int main(void){
     printf("*** Stampa una serie di promemoria ordinati per giorno ***\n\n");
 
     char reminders[MAX_REMINDER][MSG_LEN + 3] = {'\0'}, str[MSG_LEN + 1] = {'\0'};
-    char dayStr[2];
+    char dayStr[3];
     int day = 0, nm_reminder = 0, idxInsert;
 
     while(1){
