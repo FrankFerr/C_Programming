@@ -12,8 +12,7 @@ int main(void){
 
     clearLine();
     for(;;){
-        readWord(word, MAX_WORD_LEN + 1);
-        wordLen = strlen(word);
+        wordLen = readWord(word, MAX_WORD_LEN + 1);
 
         if(wordLen == 0){
             flushLine();
@@ -30,16 +29,6 @@ int main(void){
 
         addWord(word);
     }
-
-
-
-
-
-
-
-
-
-
 
     return 0;
 }

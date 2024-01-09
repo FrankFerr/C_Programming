@@ -24,12 +24,28 @@ void addWord(const char* word){
     numWords++;
 }
 
-void writeLine(void){
-    int extraSpaces, spaceToInsert, i, j;
-}
-
 int spaceRemaning(void){
     return MAX_LINE_LEN - lineLen;
+}
+
+void writeLine(void){
+    int extraSpaces, spaceToInsert, i, j;
+
+    extraSpaces = MAX_LINE_LEN - lineLen;
+    for(i = 0; i < lineLen; i++){
+        if(line[i] != ' ')
+            putchar(line[i]);
+        else{
+            spaceToInsert = extraSpaces / (numWords - 1);
+            
+            for(j = 0; j < spaceToInsert + 1; j++)
+                putchar(' ');
+
+            extraSpaces -= spaceToInsert;
+            numWords--;
+        }
+    }
+    putchar('\n');
 }
 
 void flushLine(void){

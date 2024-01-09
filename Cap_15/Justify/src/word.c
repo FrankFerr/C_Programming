@@ -4,14 +4,10 @@
 int readChar(void){
     int ch = getchar();
 
-    if(ch == '\n' || ch == '\t'){
-        return ' ';
-    }
-
-    return ch;
+    return (ch == '\n' || ch == '\t') ? ' ' : ch;
 }
 
-void readWord(char* word, int len){
+int readWord(char* word, int len){
     int ch, pos = 0;
 
     while((ch = readChar()) == ' ')
@@ -25,4 +21,6 @@ void readWord(char* word, int len){
     }
     
     word[pos] = '\0';
+    
+    return pos;
 }
