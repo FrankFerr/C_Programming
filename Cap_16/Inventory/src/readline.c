@@ -8,9 +8,12 @@ int readLine(char str[], int len){
     while(isspace(ch = getchar()))
         ;
 
-    while(ch != '\n' && ch != EOF)
+    while(ch != '\n' && ch != EOF){
         if(pos < len)
             str[pos++] = ch;
+        
+        ch = getchar();
+    }
     
     str[pos] = '\0';
 
