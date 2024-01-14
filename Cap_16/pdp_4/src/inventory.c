@@ -2,11 +2,9 @@
 #include "..\include\readline.h"
 #include "..\include\inventory.h"
 
-struct Prod{
-    int id;
-    char name[NAME_LEN + 1];
-    int qta;
-} inventory[MAX_PROD];
+
+
+Prod inventory[MAX_PROD];
 
 int cnProd = 0;
 
@@ -99,6 +97,7 @@ void update(void){
 }
 
 void print(void){
+    quicksort(inventory, 0, cnProd);
     
     printf(" -------------------------------------------\n");
     printf("| Prod. Id |        Nome        | Quantita' |\n");
