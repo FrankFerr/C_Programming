@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "..\include\readline.h"
 #include "..\include\inventory.h"
-
+#include "..\include\quicksort.h"
+#include "..\include\selection_sort.h"
 
 
 Prod inventory[MAX_PROD];
@@ -37,7 +38,7 @@ void insert(void){
         id = cnProd + 1;
 
     if(findProd(id) != -1){
-        printf("Prodotto gia' inserito!\n", id);
+        printf("Prodotto gia' inserito!\n");
         return;
     }
 
@@ -64,7 +65,7 @@ void search(void){
     idx = findProd(id);
 
     if(idx == -1){
-        printf("Prodotto non trovato!\n", id);
+        printf("Prodotto non trovato!\n");
         return;
     }
 
@@ -81,7 +82,7 @@ void update(void){
     idx = findProd(id);
 
     if(idx == -1){
-        printf("Prodotto non trovato!\n", id);
+        printf("Prodotto non trovato!\n");
         return;
     }
 
@@ -97,15 +98,16 @@ void update(void){
 }
 
 void print(void){
-    quicksort(inventory, 0, cnProd);
+    selectionSort(inventory, cnProd);
     
-    printf(" -------------------------------------------\n");
-    printf("| Prod. Id |        Nome        | Quantita' |\n");
-    printf(" -------------------------------------------\n");
+    printf("  -------------------------------------------\n");
+    printf(" | Prod. Id |        Nome        | Quantita' |\n");
+    printf("  -------------------------------------------\n");
 
     for(int i = 0; i < cnProd; i++){
-        printf("|%6d%4s|%20s|%6d%5s|\n", inventory[i].id, " ", inventory[i].name, inventory[i].qta, " ");
+        // printf("|%6d%4s|%20s|%6d%5s|\n", inventory[i].id, " ", inventory[i].name, inventory[i].qta, " ");
+        printf(FORMAT_STR, inventory[i].id, " ", inventory[i].name, inventory[i].qta, " ");
     }
 
-    printf(" -------------------------------------------\n");
+    printf("  -------------------------------------------\n");
 }
