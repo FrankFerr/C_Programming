@@ -5,7 +5,9 @@
 void printMenu(void);
 
 int main(void){
-
+    
+    Prod inventory[MAX_PROD];
+    int cnProd = 0;
     bool continuare = true;
     char op;
 
@@ -19,13 +21,13 @@ int main(void){
         printf("\n");
 
         switch(op){
-            case 'i': insert();
+            case 'i': insert(inventory, &cnProd);
                 break;
-            case 's': search();
+            case 's': search(inventory, &cnProd);
                 break;
-            case 'u': update();
+            case 'u': update(inventory, &cnProd);
                 break;
-            case 'p': print();
+            case 'p': print(inventory, &cnProd);
                 break;
             case 'q': continuare = false;
                 break;
