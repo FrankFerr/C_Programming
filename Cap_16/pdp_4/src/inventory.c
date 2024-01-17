@@ -1,9 +1,11 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "..\include\readline.h"
 #include "..\include\inventory.h"
 #include "..\include\quicksort.h"
 #include "..\include\selection_sort.h"
 
+//ritorna l'indice corrispondente all'id passato, -1 se non lo trova
 int findProd(Prod inventory[], const int* cnProd, int id){
     int idxFound = -1;
 
@@ -17,6 +19,26 @@ int findProd(Prod inventory[], const int* cnProd, int id){
     return idxFound;
 }
 
+//scrive l'intestazione del prodotto
+void printHeader(void){
+    printf("\n");
+    printf("  --------------------------------------------------------\n");
+    printf(" | Prod. Id |        Nome          | Quantita' |  Prezzo  |\n");
+    printf("  --------------------------------------------------------\n");
+}
+
+// scrive il footer
+void printFooter(void){
+    printf("  --------------------------------------------------------\n\n");
+}
+
+// scrive il prodotto formattato
+void printProd(Prod* p){
+    // printf(FORMAT_STR, p->id, p->name, p->qta, p->price);
+    printf(FORMAT_STR, (*p).id, (*p).name, (*p).qta, (*p).price);
+}
+
+//funzione per l'inserimento di un nuovo prodotto con le informazioni inserite dall'utente
 void insert(Prod inventory[], int* cnProd){
     int id = 0;
 
@@ -48,9 +70,16 @@ void insert(Prod inventory[], int* cnProd){
     if(inventory[*cnProd].qta < 0)
         inventory[*cnProd].qta = 0;
 
-    (*cnProd)++;
+    printf("Prezzo: ");
+    scanf("%lf", &inventory[*cnProd].price);
+
+    if(inventory[*cnProd].price < 0)
+        inventory[*cnProd].price = 0;
+
+    ++*cnProd;
 }
 
+//cerca e scrive un prodotto in base all'id inserito dall'utente
 void search(Prod inventory[], const int* cnProd){
     int id, idx;
     
@@ -64,15 +93,55 @@ void search(Prod inventory[], const int* cnProd){
         return;
     }
 
-    printf("Nome: %s\nQuantita': %d\n", inventory[idx].name, inventory[idx].qta);
-
+    printHeader();
+    printProd(&inventory[idx]);
+    printFooter();
 }
 
+// aggiorna il nome di un prodotto
+void updateName(Prod* p){
+    printf("Nome attuale: %s\n", (*p).name);
+
+    printf("Nuovo Nome: ");
+    readLine((*p).name, NAME_LEN);
+
+    printf("Nome aggiornato!\n");
+}
+
+// aggiorna la quantita' di un prodotto
+void updateQta(Prod* p){
+    int inQta = 0;
+
+    printf("Quantita' attuale: %d\n", (*p).qta);
+
+    printf("Inserisci la quantita' da sommare: ");
+    scanf("%d", &inQta);
+
+    (*p).qta += inQta;
+
+    printf("Quantita' aggiornata: %d\n", (*p).qta);
+}
+
+// aggiorna il prezzo di un prodotto
+void updatePrice(Prod* p){
+    
+    printf("Prezzo attuale: %.2f\n", (*p).price);
+
+    printf("Inserisci il nuovo prezzo: ");
+    scanf("%lf", &(*p).price);
+
+    printf("Prezzo aggiornato!\n");
+}
+
+//permette di aggiornare una qualsiasi proprieta' di un prodotto
 void update(Prod inventory[], const int* cnProd){
-    int id, idx, qtaSum;
+    int id, idx;
+    char ch;
+    bool exit = false;
     
     printf("Inserisci il codice del prodotto da aggiornare: ");
     scanf("%d", &id);
+    getchar();
 
     idx = findProd(inventory, cnProd, id);
 
@@ -81,28 +150,42 @@ void update(Prod inventory[], const int* cnProd){
         return;
     }
 
-    printf("Quantita' attuale: %d\n", inventory[idx].qta);
+    printHeader();
+    printProd(&inventory[idx]);
+    printFooter();
 
-    printf("Inserisci la quantita' da sommare: ");
-    scanf("%d", &qtaSum);
+    while(!exit){
+        printf("Cosa vuoi modificare?\n");
+        printf("1) Nome\n2) Quantita'\n3) Prezzo\nx) Esci\n>");
+        ch = (char) getchar();
+        getchar();
 
-    inventory[idx].qta += qtaSum;
+        printf("\n");
+        switch(ch){
+            case '1': updateName(&inventory[idx]);
+                break;
+            case '2': updateQta(&inventory[idx]);
+                break;
+            case '3': updatePrice(&inventory[idx]);
+                break;
+            default: exit = true;
+        }
 
-    printf("Quantita' aggiornata: %d\n", inventory[idx].qta);
-    
+        printHeader();
+        printProd(&inventory[idx]);
+        printFooter();
+    }
 }
 
+//scrive tutto l'inventario
 void print(Prod inventory[], const int* cnProd){
     selectionSort(inventory, *cnProd);
     
-    printf("  ---------------------------------------------\n");
-    printf(" | Prod. Id |        Nome          | Quantita' |\n");
-    printf("  ---------------------------------------------\n");
+    printHeader();
 
     for(int i = 0; i < *cnProd; i++){
-        // printf("|%6d%4s|%20s|%6d%5s|\n", inventory[i].id, " ", inventory[i].name, inventory[i].qta, " ");
-        printf(FORMAT_STR, inventory[i].id, inventory[i].name, inventory[i].qta);
+        printProd(&inventory[i]);
     }
 
-    printf("  ---------------------------------------------\n");
+    printFooter();
 }

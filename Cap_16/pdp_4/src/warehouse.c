@@ -11,7 +11,7 @@ int main(void){
     bool continuare = true;
     char op;
 
-    printf("*** Gestione inventario ***\n");
+    printf("*** Gestione inventario ***\n\n");
     while(continuare){
         printMenu();
         scanf(" %c", &op);
@@ -33,6 +33,8 @@ int main(void){
                 break;
             default: printf("Operazione inesistente!\n");
         }
+
+        printf("\n");
     }
 
     printf("\n");
@@ -40,7 +42,6 @@ int main(void){
 }
 
 void printMenu(void){
-    printf("\n");
     printf("Scegli un opzione\n");
     printf("i) Inserisci\ns) Cerca\nu) Aggiorna\np) Stampa inventario\nq) Esci\n>");
 }

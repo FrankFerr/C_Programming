@@ -4,7 +4,7 @@
 #define MAX_PROD 100
 #define NAME_LEN 20
 
-#define FORMAT_STR " | %8d | %" GET_STR_LEN(NAME_LEN) "s | %9d |\n"
+#define FORMAT_STR " | %8d | %" GET_STR_LEN(NAME_LEN) "s | %9d | %8.2f |\n"
 #define GET_STR_LEN(len) STR_LEN(len)
 #define STR_LEN(l) #l
 
@@ -12,6 +12,7 @@ typedef struct{
     int id;
     char name[NAME_LEN + 1];
     int qta;
+    double price;
 } Prod;
 
 void insert(Prod inventory[], int* cnProd);
