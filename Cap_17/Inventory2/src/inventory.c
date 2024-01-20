@@ -4,13 +4,13 @@
 #include "..\include\inventory.h"
 
 /*findProd: cerca, all'interno di una lista concatenata puntata da head, un nodo con id uguale a pId.
-            Restituisce */
+            Restituisce un puntatore */
 struct Prod* findProd(struct Prod* head, int pId){
 
     while(head != NULL && pId > head->id)
         head = head->next;
 
-    return head;
+    return head->id == pId ? head : NULL;
 }
 
 //scrive l'intestazione del prodotto
@@ -33,8 +33,8 @@ void printProd(struct Prod* p){
 }
 
 //funzione per l'inserimento di un nuovo prodotto con le informazioni inserite dall'utente
-void insert(Prod inventory[], int* cnProd){
-    int id = 0;
+void insert(struct Prod* head){
+    
 
     if(*cnProd == MAX_PROD){
         printf("Database pieno!\n");
