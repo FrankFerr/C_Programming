@@ -1,5 +1,5 @@
-#ifndef INVENTORY_H
-#define INVENTORY_H
+#ifndef PROD_LINKED_LIST_H
+#define PROD_LINKED_LIST_H
 
 #define MAX_PROD 100
 #define NAME_LEN 20
@@ -17,9 +17,10 @@ struct Prod{
     struct Prod* next;
 };
 
-void insert(struct Prod* inventory);
-void search(struct Prod* inventory);
-void update(struct Prod* inventory);
-void print(struct Prod* inventory);
+struct Prod *insert(struct Prod *head);
+void search(struct Prod *head);
+void update(struct Prod *head);
+void print(struct Prod *head);
+struct Prod * delete(struct Prod *head);
 
 #endif
