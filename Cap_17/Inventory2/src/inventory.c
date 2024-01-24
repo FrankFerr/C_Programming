@@ -20,7 +20,7 @@ int main(void){
         printf("\n");
 
         switch(op){
-            case 'i': inventory = insert(inventory);
+            case 'i': insert(&inventory);
                 break;
             case 's': search(inventory);
                 break;
@@ -28,7 +28,7 @@ int main(void){
                 break;
             case 'p': print(inventory);
                 break;
-            case 'd': inventory = delete(inventory);
+            case 'd': delete(&inventory);
                 break;
             case 'q': continuare = false;
                 break;

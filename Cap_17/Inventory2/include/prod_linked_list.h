@@ -17,10 +17,10 @@ struct Prod{
     struct Prod* next;
 };
 
-struct Prod *insert(struct Prod *head);
+void insert(struct Prod **head);
 void search(struct Prod *head);
 void update(struct Prod *head);
 void print(struct Prod *head);
-struct Prod * delete(struct Prod *head);
+void delete(struct Prod **head);
 
 #endif

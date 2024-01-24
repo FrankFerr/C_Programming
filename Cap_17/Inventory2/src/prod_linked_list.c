@@ -36,14 +36,14 @@ void printProd(struct Prod *p){
 }
 
 //Inserisce un nuovo prodotto con le informazioni fornite dall'utente 
-struct Prod *insert(struct Prod *head){
+void insert(struct Prod **head){
     struct Prod *prev, *cur;
 
     struct Prod *newProd = malloc(sizeof(struct Prod));
 
     if(!newProd){
         printf("Database pieno!\n");
-        return NULL;
+        return;
     }
 
     printf("Inserimento nuovo prodotto\n");
@@ -54,7 +54,7 @@ struct Prod *insert(struct Prod *head){
         newProd->id = cnProd + 1;
 
     //ciclo su tutta la lista per trovare il punto in cui inserire il nuovo prodotto oridnandoli per id crescente
-    for(prev = NULL, cur = head; 
+    for(prev = NULL, cur = *head; 
         cur && newProd->id > cur->id; 
         prev = cur, cur = cur->next)
         ;
@@ -62,7 +62,7 @@ struct Prod *insert(struct Prod *head){
     if(cur && cur->id == newProd->id){
         printf("Prodotto gia' inserito!\n");
         free(newProd);
-        return NULL;
+        return;
     }
 
     printf("Nome: ");
@@ -83,14 +83,13 @@ struct Prod *insert(struct Prod *head){
     newProd->next = cur;
     //se prev e' NULL allora la lista e' vuota
     if(!prev)
-        head = newProd;
+        *head = newProd;
     else
         prev->next = newProd;
 
     cnProd++;
     printf("Prodotto inserito correttamente!\n");
-    
-    return head;
+
 }
 
 //cerca e scrive un prodotto in base all'id inserito dall'utente
@@ -211,7 +210,7 @@ void print(struct Prod *head){
 }
 
 //Elimina un prodotto dalla lista se esiste
-struct Prod *delete(struct Prod *head){
+void delete(struct Prod **head){
     int id;
     struct Prod *prev, *cur;
     
@@ -220,15 +219,15 @@ struct Prod *delete(struct Prod *head){
     getchar();
     
     //ciclo su tutta la lista per trovare il punto in cui inserire il nuovo prodotto oridnandoli per id crescente
-    for(prev = NULL, cur = head; 
+    for(prev = NULL, cur = *head; 
         cur && id > cur->id; 
         prev = cur, cur = cur->next)
         ;
 
     if(!cur)
-        return head;
+        return;
     if(!prev)
-        head = head->next;
+        *head = (*head)->next;
     else
         prev->next = cur->next;
     
@@ -236,5 +235,4 @@ struct Prod *delete(struct Prod *head){
     cnProd--;
     printf("Prodotto eliminato correttamente!\n");
 
-    return head;
 }
