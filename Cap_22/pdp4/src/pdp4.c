@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <string.h>
 
 int countChar(const char* filename);
 int countWord(const char* filename);
@@ -76,15 +77,16 @@ int countWord(const char* filename){
 int countLine(const char* filename){
     int count = 0;
     FILE *fp = fopen(filename, "r");
-    char s[150 + 1];
+    char s[200 + 1];
 
     if(fp == NULL){
         printf("Impossibile aprire %s", filename);
         exit(EXIT_FAILURE);
     }
 
-    while(fgets(s, 150, fp) != NULL)
-        count++;
+    while(fgets(s, 200, fp) != NULL)
+        if(s[strlen(s) - 1] == '\n')
+            count++;
 
     fclose(fp);
 
