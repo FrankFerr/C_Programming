@@ -2,37 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define FILE_EXT ".rel"
 #define SIZE_BUFF 4
 
-int main(int argc, char **argv){
+static const char *REL_EXT = ".rel";
 
-    if(argc != 2){
-        printf("ERRORE! Lancia: compress <nomefile>");
-        exit(EXIT_FAILURE);
-    }
+char *compress(const char *filename){
 
     FILE *inFile, *outFile;
     size_t lenFileName = 0;
     char *compressFileName, buff[SIZE_BUFF + 1];
     int ch, lastCh = EOF, cntBytes = 0;
 
-    if((inFile = fopen(argv[1], "rb")) == NULL){
-        printf("Impossibile aprire %s\n", argv[1]);
-        exit(EXIT_FAILURE);
+    if((inFile = fopen(filename, "rb")) == NULL){
+        return "Impossibile aprire il file";
     }
 
     //calcolo la lunghezza del nome del file per allocare memoria per la stringa
-    lenFileName = sizeof(char) * strlen(argv[1]) + sizeof(char) * strlen(FILE_EXT);
+    lenFileName = sizeof(char) * strlen(filename) + sizeof(char) * strlen(REL_EXT);
     compressFileName = (char *) malloc(lenFileName + 1);
 
     //genero il nome del file compresso
-    strcpy(compressFileName, argv[1]);
-    strcat(compressFileName, FILE_EXT);
+    strcpy(compressFileName, filename);
+    strcat(compressFileName, REL_EXT);
 
     if((outFile = fopen(compressFileName, "wb")) == NULL){
-        printf("Impossibile creare il file compresso\n");
-        exit(EXIT_FAILURE);
+        return "Impossibile creare il file compresso";
     }
 
     //comprimo il file
@@ -52,10 +46,9 @@ int main(int argc, char **argv){
 
     }
 
+    free(compressFileName);
     fclose(inFile);
     fclose(outFile);
 
-    printf("File compresso: %s\n", compressFileName);
-
-    return 0;
+    return "File compresso!";
 }
