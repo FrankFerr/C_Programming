@@ -1,9 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include "..\include\readline.h"
 #include "..\include\inventory.h"
 
-#define DATA_PATH "../data"
+#define DATA_PATH "data"
 #define FILE_NAME "Inventory.dat"
 
 struct Prod{
@@ -43,7 +44,7 @@ void insert(void){
         id = cnProd + 1;
 
     if(findProd(id) != -1){
-        printf("Prodotto gia' inserito!\n", id);
+        printf("Prodotto gia' inserito!\n");
         return;
     }
 
@@ -70,7 +71,7 @@ void search(void){
     idx = findProd(id);
 
     if(idx == -1){
-        printf("Prodotto non trovato!\n", id);
+        printf("Prodotto non trovato!\n");
         return;
     }
 
@@ -87,7 +88,7 @@ void update(void){
     idx = findProd(id);
 
     if(idx == -1){
-        printf("Prodotto non trovato!\n", id);
+        printf("Prodotto non trovato!\n");
         return;
     }
 
@@ -103,7 +104,6 @@ void update(void){
 }
 
 void print(void){
-    
     printf(" -------------------------------------------\n");
     printf("| Prod. Id |        Nome        | Quantita' |\n");
     printf(" -------------------------------------------\n");
@@ -116,12 +116,84 @@ void print(void){
 }
 
 void save(void){
-    char *filePath = DATA_PATH;
+    char *filePath;
     FILE *fp;
+    int cntElem = 0, lenFilepath = 0;
 
-    strcat(strcat(filePath, "/"), FILE_NAME);
-    
-    if((fp = fopen(filePath, "rb")) == NULL){
-        printf("Impossibile salvare ")
+    if(cnProd == 0){
+        printf("Nessun prodotto in memoria.\n");
+        return;
     }
+
+    lenFilepath = strlen(DATA_PATH) + 1 + strlen(FILE_NAME) + 1;
+    filePath = (char *) malloc(sizeof(char) * lenFilepath);
+
+    if(filePath == NULL){
+        printf("Impossibile salvare i dati\n");
+        return;
+    }
+
+    strcpy(filePath, DATA_PATH);
+    strcat(strcat(filePath, "/"), FILE_NAME);
+    filePath[lenFilepath] = '\0';
+
+    printf("Sto tentando di aprire %s\n", filePath);
+
+    if((fp = fopen(filePath, "wb")) == NULL){
+        free(filePath);
+        printf("Impossibile salvare i dati\n");
+        return;
+    }
+
+    cntElem = fwrite(inventory, sizeof(struct Prod), cnProd, fp);
+
+    if(cntElem != cnProd || ferror(fp)){
+        printf("Impossibile salvare i dati\n");
+    } else {
+        printf("Salvataggio avvenuto con successo!\n");
+    }
+
+    free(filePath);
+    fclose(fp);
+
+}
+
+void load(void){
+    char *filePath;
+    FILE *fp;
+    int cntElem = 0, lenFilepath = 0;
+
+    lenFilepath = strlen(DATA_PATH) + 1 + strlen(FILE_NAME) + 1;
+    filePath = (char *) malloc(sizeof(char) * lenFilepath);
+
+    if(filePath == NULL){
+        printf("Impossibile caricare i dati\n");
+        return;
+    }
+
+    strcpy(filePath, DATA_PATH);
+    strcat(strcat(filePath, "/"), FILE_NAME);
+    filePath[lenFilepath] = '\0';
+    
+    printf("Sto tentando di aprire %s\n", filePath);
+
+    if((fp = fopen(filePath, "rb")) == NULL){
+        free(filePath);
+        printf("Impossibile caricare i dati\n");
+        return;
+    }
+
+    cntElem = fread(inventory, sizeof inventory[0], MAX_PROD, fp);
+
+    if(ferror(fp)){
+        printf("Impossibile caricare i dati\n");
+    } else if(cntElem == 0){
+        printf("File vuoto!\n");
+    } else {
+        printf("Caricamento di %d elementi avvenuto con successo!\n", cntElem);
+        cnProd = cntElem;
+    }
+
+    free(filePath);
+    fclose(fp);
 }
