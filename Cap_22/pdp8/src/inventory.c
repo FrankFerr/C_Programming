@@ -5,7 +5,7 @@
 #include "..\include\inventory.h"
 
 #define DATA_PATH "data"
-#define FILE_NAME "Inventory.dat"
+#define FILENAME_LENGTH 25
 
 struct Prod{
     int id;
@@ -115,8 +115,19 @@ void print(void){
     printf(" -------------------------------------------\n");
 }
 
+char *getFilename(void){
+    char *filename = (char *) malloc(sizeof(char) * (FILENAME_LENGTH + 1));
+
+    if(filename != NULL){
+        printf("Inserisci il nome del file (max %d caratteri): ", FILENAME_LENGTH);
+        readLine(filename, FILENAME_LENGTH);
+    }
+
+    return filename;
+}
+
 void save(void){
-    char *filePath;
+    char *filePath, *filename;
     FILE *fp;
     int cntElem = 0, lenFilepath = 0;
 
@@ -125,7 +136,13 @@ void save(void){
         return;
     }
 
-    lenFilepath = strlen(DATA_PATH) + 1 + strlen(FILE_NAME) + 1;
+    filename = getFilename();
+    if(filename == NULL){
+        printf("Impossibile salvare i dati\n");
+        return;
+    }
+
+    lenFilepath = strlen(DATA_PATH) + 1 + strlen(filename) + 1;
     filePath = (char *) malloc(sizeof(char) * lenFilepath);
 
     if(filePath == NULL){
@@ -134,14 +151,15 @@ void save(void){
     }
 
     strcpy(filePath, DATA_PATH);
-    strcat(strcat(filePath, "/"), FILE_NAME);
+    strcat(strcat(filePath, "/"), filename);
     filePath[lenFilepath] = '\0';
+    free(filename);
 
     printf("Sto tentando di aprire %s\n", filePath);
 
     if((fp = fopen(filePath, "wb")) == NULL){
         free(filePath);
-        printf("Impossibile salvare i dati\n");
+        printf("Impossibile generare il file\n");
         return;
     }
 
@@ -159,11 +177,17 @@ void save(void){
 }
 
 void load(void){
-    char *filePath;
+    char *filePath, *filename;
     FILE *fp;
     int cntElem = 0, lenFilepath = 0;
 
-    lenFilepath = strlen(DATA_PATH) + 1 + strlen(FILE_NAME) + 1;
+    filename = getFilename();
+    if(filename == NULL){
+        printf("Impossibile salvare i dati\n");
+        return;
+    }
+
+    lenFilepath = strlen(DATA_PATH) + 1 + strlen(filename) + 1;
     filePath = (char *) malloc(sizeof(char) * lenFilepath);
 
     if(filePath == NULL){
@@ -172,14 +196,15 @@ void load(void){
     }
 
     strcpy(filePath, DATA_PATH);
-    strcat(strcat(filePath, "/"), FILE_NAME);
+    strcat(strcat(filePath, "/"), filename);
     filePath[lenFilepath] = '\0';
+    free(filename);
     
     printf("Sto tentando di aprire %s\n", filePath);
 
     if((fp = fopen(filePath, "rb")) == NULL){
         free(filePath);
-        printf("Impossibile caricare i dati\n");
+        printf("Impossibile aprire il file!\n");
         return;
     }
 
