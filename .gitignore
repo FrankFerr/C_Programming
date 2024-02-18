@@ -3,5 +3,5 @@ TEST/
 output/
 test/
 bin/
-
+data/
 .vscode/
