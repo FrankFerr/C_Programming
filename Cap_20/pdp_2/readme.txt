@@ -1,4 +1,4 @@
-Francesco Ferrante 03/12/2023
+Francesco Ferrante 01/03/2024
 
 Simulazione di una calcolatrice RPN (Reverse Polish Notation), dove vengono inseriti prima gli operandi e in coda gli operatori
 
