@@ -2,14 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define QUEUE_SIZE 10
-
 struct queue_type{
+    Item *queue;
     int len, size, first, last;
-    Item queue[QUEUE_SIZE];
 };
 
-Queue queue_create(void);
+Queue queue_create(int size);
 void queue_destroy(Queue q);
 void queue_make_empty(Queue q);
 void queue_push(Queue q, Item obj);
@@ -21,20 +19,26 @@ bool queue_is_full(Queue q);
 static void queue_terminate(const char *msg);
 int queue_length(Queue q);
 
-Queue queue_create(void){
+Queue queue_create(int size){
     Queue q = malloc(sizeof(struct queue_type));
     if(!q)
         queue_terminate("Error in create: queue can't be created");
     
+    q->queue = malloc(size * sizeof(Item));
+    if(!q->queue){
+        free(q);
+        queue_terminate("Error in create: queue can't be created");
+    }
     q->first = 0;
     q->last = 0;
     q->len = 0;
-    q->size = QUEUE_SIZE;
+    q->size = size;
 
     return q;
 }
 
 void queue_destroy(Queue q){
+    free(q->queue);
     free(q);
 }
 

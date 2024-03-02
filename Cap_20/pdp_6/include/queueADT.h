@@ -5,7 +5,7 @@
 typedef struct queue_type *Queue;
 typedef int Item;
 
-Queue queue_create(void);
+Queue queue_create(int size);
 void queue_destroy(Queue q);
 void queue_make_empty(Queue q);
 void queue_push(Queue q, Item obj);

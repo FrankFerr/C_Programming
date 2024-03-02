@@ -6,7 +6,7 @@ int main(void){
     Queue q1;
     Item obj;
     
-    q1 = queue_create();
+    q1 = queue_create(10);
     
     for(int i = 0; i < 6; i++){
         queue_push(q1, i + 1);
